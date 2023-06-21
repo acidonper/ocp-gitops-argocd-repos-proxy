@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: squid
+  name: squid
+spec:
+  ports:
+    - port: 3128
+  selector:
+    app.kubernetes.io/name: squid
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: squid
+  name: squid
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: squid
+  replicas: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: squid
+    spec:
+      containers:
+        - name: squid
+          image: quay.io/acidonpe/squid:latest
+          ports:
+          - containerPort: 3128
+            protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 3128
+            initialDelaySeconds: 40
+            timeoutSeconds: 4

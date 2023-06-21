@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: squid-test
+  name: squid-test
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: squid-test
+  replicas: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: squid-test
+    spec:
+      containers:
+        - name: squid-test
+          image: registry.redhat.io/openshift4/ose-cli
+          command:
+            - /bin/sh
+            - -c
+            - while true; do sleep 20; done
